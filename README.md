@@ -1,5 +1,7 @@
-# AI Launchpad: Zero to Infinity Enterprise Academy
-## BI V18 (Power BI) - AI Launchpad Track • Nov 27th Batch1 BLR
+# 🚀 AI Launchpad: Zero to Infinity Enterprise Academy
+### BI V18 (Power BI) - AI Launchpad Track • Nov 27th Batch1 BLR • Fortune 500 Standards
+
+🌐 **Live Web Application**: [https://sarlayash.github.io/Power-BI-with-AI---Premium-Mentorship-By-Kapil/](https://sarlayash.github.io/Power-BI-with-AI---Premium-Mentorship-By-Kapil/)
 
 A Fortune 500 enterprise-standard learning web application designed for learners going from **Zero to Infinity**. Built with React 19, Vite, Tailwind CSS, Lucide Icons, and an **Integrated Python IDLE / WebAssembly (Pyodide)** environment.
 
@@ -9,24 +11,24 @@ A Fortune 500 enterprise-standard learning web application designed for learners
 
 1. **Personalized Learner Onboarding ("Enter Name & Begin Journey")**:
    - Welcome gate prompting learners for their name, executive avatar, and enterprise specialization role.
-   - Persistent learner state via `localStorage` (XP, daily streak, completed modules, badges, mock test records).
+   - Persistent learner state via `localStorage` (XP points, daily streaks, completed modules, badges, mock test records).
 
-2. **Complete 14-Module Curriculum + Capstone (Direct from PDF)**:
-   - **Day 1**: Python Basics & Control Flow (Subtopics 1–6 + Console Utilities Lab)
-   - **Day 2**: Data Structures & Exception Handling (Subtopics 1–4 + Inventory Manager Lab)
-   - **Day 3**: Functions, OOPS & Generics (Subtopics 1–5 + Bank Account & Generic Repository[T] Lab)
-   - **Day 4**: Files, Modules & Python Project Structure (Subtopics 1–5 + Expense Tracker Package Lab)
-   - **Day 5**: REST API Development with FastAPI (Subtopics 1–6 + Product Management REST API Lab)
-   - **Day 6 (AM)**: Generative AI Fundamentals (Subtopics 1–5 + Feedback Sentiment Summarizer Lab)
-   - **Day 6 (PM)**: Prompt Engineering (Subtopics 1–5 + BI Prompt Library Lab)
+2. **Complete 14-Module Curriculum + Capstone (Basis Course Structure Document)**:
+   - **Day 1**: Python Basics & Control Flow (Subtopics 1–6 + Console Utility Suite: Grade Calculator & ATM Simulator)
+   - **Day 2**: Data Structures & Exception Handling (Subtopics 1–4 + Inventory & Student Records Manager)
+   - **Day 3**: Functions, OOPS & Generics (Subtopics 1–5 + Bank Account & Generic Repository[T])
+   - **Day 4**: Files, Modules & Python Project Structure (Subtopics 1–5 + Expense Tracker Package)
+   - **Day 5**: REST API Development with FastAPI (Subtopics 1–6 + Product Management REST API with Auth)
+   - **Day 6 (AM)**: Generative AI Fundamentals (Subtopics 1–5 + Customer Feedback Sentiment Summarizer)
+   - **Day 6 (PM)**: Prompt Engineering (Subtopics 1–5 + Enterprise BI Prompt Library)
    - **Day 7 (AM)**: Open-Source LLM Ecosystem (Subtopics 1–5 + Model Decision Matrix Lab)
-   - **Day 7 (PM)**: Running Open-Source LLMs (Subtopics 1–5 + Ollama Semantic Search Lab)
-   - **Day 8**: LangChain Fundamentals (Subtopics 1–6 + LCEL Extraction Pipeline Lab)
-   - **Day 9**: LangChain Agents & Tools (Subtopics 1–5 + Sales Insights Agent with Guardrails Lab)
-   - **Day 10**: Agentic AI Workflows & Testing (Subtopics 1–5 + Evaluator-Optimizer Lab)
-   - **Day 11**: LangGraph & Multi-Agent Systems (Subtopics 1–4 + Multi-Agent Supervisor Report Lab)
-   - **Day 12**: RAG & Azure AI Services (Subtopics 1–6 + Azure Policy Assistant RAG Lab)
-   - **Capstone**: AI-Powered Sales Insights Assistant (All 7 Phases + 50,000+ orders scenario + Rubric)
+   - **Day 7 (PM)**: Running Open-Source LLMs (Subtopics 1–5 + Local Ollama Client & Vector Matcher)
+   - **Day 8**: LangChain Fundamentals (Subtopics 1–6 + Invoice Pydantic Extraction Chain)
+   - **Day 9**: LangChain Agents & Tools (Subtopics 1–5 + Sales Insights Agent with Guardrails)
+   - **Day 10**: Agentic AI Workflows & Testing (Subtopics 1–5 + Evaluator-Optimizer Code Generator)
+   - **Day 11**: LangGraph & Multi-Agent Systems (Subtopics 1–4 + Multi-Agent Sales Report Generator)
+   - **Day 12**: RAG & Azure AI Services (Subtopics 1–6 + Enterprise Policy Assistant on Azure)
+   - **Capstone**: AI-Powered Sales Insights Assistant (All 7 Phases + 50,000+ orders DB scenario + Rubric)
 
 3. **Integrated IDLE Studio (Python 3.12 WebAssembly)**:
    - In-browser Python code execution powered by Pyodide WebAssembly with zero backend latency.
@@ -53,17 +55,27 @@ A Fortune 500 enterprise-standard learning web application designed for learners
 
 ---
 
-### 🚀 Running the Project
+### ⚙️ Enabling GitHub Pages (If not already enabled)
+
+1. Open your repository on GitHub:
+   [https://github.com/sarlayash/Power-BI-with-AI---Premium-Mentorship-By-Kapil/settings/pages](https://github.com/sarlayash/Power-BI-with-AI---Premium-Mentorship-By-Kapil/settings/pages)
+2. Under **Build and deployment > Source**, select either:
+   - **Deploy from a branch** -> Select Branch: `gh-pages` and Folder: `/ (root)` -> Click **Save**.
+   - OR select **GitHub Actions** (the bundled `.github/workflows/deploy.yml` workflow will automatically build and publish).
+3. The site will be immediately live at:
+   👉 **[https://sarlayash.github.io/Power-BI-with-AI---Premium-Mentorship-By-Kapil/](https://sarlayash.github.io/Power-BI-with-AI---Premium-Mentorship-By-Kapil/)**
+
+---
+
+### 💻 Local Development
 
 ```bash
-# Navigate to the workspace
-cd C:\\Users\\LC\\.gemini\\antigravity\\scratch\\ai-launchpad-academy
+# Clone repository
+git clone https://github.com/sarlayash/Power-BI-with-AI---Premium-Mentorship-By-Kapil.git
+
+# Install dependencies
+npm install
 
 # Start development server
 npm run dev
-
-# Or build for production
-npm run build
 ```
-
-Open [http://localhost:5173](http://localhost:5173) in any browser.
