@@ -2460,7 +2460,7 @@ ai_sales_assistant/
     └── test_repository.py
 """
 print(PHASE_1_TREE)`,
-        output: PHASE_1_TREE,
+        output: "\nai_sales_assistant/\n├── config/\n│   ├── settings.py\n│   └── logging.yaml\n├── data/\n│   └── sales_dw.sqlite\n├── src/\n│   ├── repository/\n│   │   └── base.py (Generic Repository[T])\n│   ├── services/\n│   └── main.py\n└── tests/\n    └── test_repository.py\n",
       },
       {
         id: "cap-s2",
