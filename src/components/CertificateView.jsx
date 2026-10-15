@@ -1,262 +1,383 @@
-import React, { useState, useRef } from "react";
-import { 
-  Award, 
-  Printer, 
-  Download, 
-  ShieldCheck, 
-  QrCode, 
-  Sparkles, 
-  CheckCircle2, 
-  Share2, 
-  Copy, 
-  Check 
+import React, { useRef, useState } from "react";
+import {
+  Award,
+  Printer,
+  ShieldCheck,
+  Sparkles,
+  CheckCircle2,
+  Share2,
+  Check,
+  X,
 } from "lucide-react";
 import confetti from "canvas-confetti";
 import { playBadgeUnlockSound } from "../utils/soundEffects";
 
-export default function CertificateView({ learner }) {
+export default function CertificateView({ learner = {} }) {
   const [showVerifyModal, setShowVerifyModal] = useState(false);
   const [copiedLink, setCopiedLink] = useState(false);
   const certRef = useRef(null);
 
-  const learnerName = learner.name || "Distinguished Enterprise Fellow";
-  const issueDate = learner.joinedAt || new Date().toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" });
-  
-  // Deterministic Credential ID based on learner name
-  const hash = Math.abs(
-    (learnerName + "BI-V18-BLR").split("").reduce((acc, char) => (acc * 31 + char.charCodeAt(0)) | 0, 0)
-  ).toString().padStart(6, "0").slice(0, 8);
-  const credentialId = `BLR-V18-AI-${hash}`;
+  const learnerName = learner?.name?.trim() || "Distinguished Learner";
+  const learnerRole =
+    learner?.role?.trim() || "AI, Data & Technology Practitioner";
+  const issueDate = learner?.joinedAt
+    ? new Date(learner.joinedAt).toLocaleDateString("en-IN", {
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+      })
+    : new Date().toLocaleDateString("en-IN", {
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+      });
+
+  // This is a display ID, not a cryptographic or independently verified credential.
+  const idSource = `${learnerName}-SARLAYASH-KAPIL`;
+  const idHash = Math.abs(
+    idSource
+      .split("")
+      .reduce((acc, char) => (acc * 31 + char.charCodeAt(0)) | 0, 0)
+  )
+    .toString()
+    .padStart(8, "0")
+    .slice(0, 8);
+  const credentialId = `SY-KMV-${idHash}`;
 
   const handlePrint = () => {
     window.print();
   };
 
-  const handleShare = () => {
-    const text = `I am proud to earn my official Enterprise AI Launchpad Certification (BI V18 Track) in Python, FastAPI, LangGraph Multi-Agent Systems, and Azure AI Cloud RAG! Credential ID: ${credentialId}`;
-    if (navigator.share) {
-      navigator.share({
-        title: "Fortune 500 AI Launchpad Certificate",
-        text,
-        url: window.location.href,
-      }).catch(() => {});
-    } else {
-      navigator.clipboard.writeText(text);
-      setCopiedLink(true);
-      setTimeout(() => setCopiedLink(false), 2000);
+  const handleShare = async () => {
+    const shareText = `I have completed the AI Launchpad learning track. Certificate recipient: ${learnerName}. Issued by Kapil — Knowledge MultiVerse Architect. Powered By Kapil. Certificate ID: ${credentialId}.`;
+
+    try {
+      if (navigator.share) {
+        await navigator.share({
+          title: "SarlaYash Learning Certificate",
+          text: shareText,
+          url: window.location.href,
+        });
+      } else if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(shareText);
+        setCopiedLink(true);
+        window.setTimeout(() => setCopiedLink(false), 2000);
+      } else {
+        window.prompt("Copy your certificate details:", shareText);
+      }
+    } catch {
+      // Sharing can be cancelled by the user; no action is needed.
     }
   };
 
   const handleConfetti = () => {
-    playBadgeUnlockSound();
+    try {
+      playBadgeUnlockSound();
+    } catch {
+      // Sound is optional.
+    }
+
     try {
       confetti({
-        particleCount: 100,
-        spread: 90,
-        origin: { y: 0.5 },
+        particleCount: 80,
+        spread: 75,
+        origin: { y: 0.55 },
       });
-    } catch {}
+    } catch {
+      // Confetti is optional.
+    }
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
-      {/* Action Header Banner */}
-      <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 print:hidden">
+    <main className="mx-auto max-w-7xl space-y-8 px-4 py-8 sm:px-6 lg:px-8">
+      <style>{`
+        @media print {
+          @page { size: landscape; margin: 10mm; }
+          body { background: #ffffff !important; }
+          body * { visibility: hidden !important; }
+          .certificate-print-area,
+          .certificate-print-area * { visibility: visible !important; }
+          .certificate-print-area {
+            position: absolute !important;
+            inset: 0 auto auto 0 !important;
+            width: 100% !important;
+            margin: 0 !important;
+            border-radius: 0 !important;
+            box-shadow: none !important;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+          }
+          .no-print { display: none !important; }
+        }
+      `}</style>
+
+      <section className="no-print flex flex-col items-start justify-between gap-6 rounded-3xl border border-slate-800 bg-slate-900 p-6 sm:p-8 md:flex-row md:items-center">
         <div>
-          <div className="flex items-center gap-2 mb-2">
-            <span className="px-3 py-1 rounded-full text-xs font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30 flex items-center gap-1.5">
-              <ShieldCheck className="w-3.5 h-3.5" />
-              Verified Industry Credential
-            </span>
-            <span className="text-xs text-slate-400 font-mono">
-              ID: {credentialId}
-            </span>
+          <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-amber-500/30 bg-amber-500/10 px-3 py-1 text-xs font-bold uppercase tracking-wide text-amber-300">
+            <ShieldCheck className="h-4 w-4" />
+            Learning Achievement Certificate
           </div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
-            Official Executive Certificate of Completion
+          <h1 className="text-2xl font-extrabold tracking-tight text-white sm:text-3xl">
+            Certificate of Completion
           </h1>
-          <p className="text-slate-300 text-xs sm:text-sm mt-1 max-w-2xl">
-            Accredited by the Enterprise AI Center of Excellence. Demonstrates production competency across all 14 curriculum modules and the end-to-end Capstone Project.
+          <p className="mt-2 max-w-2xl text-sm text-slate-300">
+            A recognition of learning progress and practical effort in the AI
+            Launchpad learning track.
+          </p>
+          <p className="mt-2 font-mono text-xs text-slate-400">
+            Certificate ID: {credentialId}
           </p>
         </div>
 
-        {/* Action Buttons */}
-        <div className="flex flex-wrap items-center gap-3">
+        <div className="flex flex-wrap gap-3">
           <button
+            type="button"
             onClick={handlePrint}
-            className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs border border-slate-700 transition-all cursor-pointer"
+            className="inline-flex items-center gap-2 rounded-xl border border-slate-700 bg-slate-800 px-4 py-2.5 text-xs font-bold text-white transition hover:bg-slate-700"
           >
-            <Printer className="w-4 h-4" />
-            <span>Print / PDF</span>
+            <Printer className="h-4 w-4" />
+            Print / Save PDF
           </button>
-
           <button
+            type="button"
             onClick={handleShare}
-            className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs border border-slate-700 transition-all cursor-pointer"
+            className="inline-flex items-center gap-2 rounded-xl border border-slate-700 bg-slate-800 px-4 py-2.5 text-xs font-bold text-white transition hover:bg-slate-700"
           >
-            {copiedLink ? <Check className="w-4 h-4 text-emerald-400" /> : <Share2 className="w-4 h-4" />}
-            <span>{copiedLink ? "Copied" : "Share"}</span>
+            {copiedLink ? (
+              <Check className="h-4 w-4 text-emerald-400" />
+            ) : (
+              <Share2 className="h-4 w-4" />
+            )}
+            {copiedLink ? "Copied" : "Share"}
           </button>
-
           <button
+            type="button"
             onClick={() => setShowVerifyModal(true)}
-            className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-yellow-400 hover:from-amber-400 hover:to-yellow-300 text-slate-950 font-black text-xs shadow-lg shadow-amber-500/20 transition-all cursor-pointer"
+            className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-amber-500 to-yellow-300 px-5 py-2.5 text-xs font-black text-slate-950 transition hover:from-amber-400 hover:to-yellow-200"
           >
-            <ShieldCheck className="w-4 h-4" />
-            <span>Verify Authenticity</span>
+            <ShieldCheck className="h-4 w-4" />
+            Certificate Details
           </button>
         </div>
-      </div>
+      </section>
 
-      {/* The Printable Certificate Container */}
-      <div 
+      <section
         ref={certRef}
         onClick={handleConfetti}
-        className="w-full bg-slate-950 border-8 border-double border-amber-600/60 rounded-3xl p-8 sm:p-16 relative overflow-hidden shadow-2xl text-slate-100 select-none cursor-pointer"
+        className="certificate-print-area relative w-full cursor-pointer select-none overflow-hidden rounded-3xl border-8 border-double border-amber-500/70 bg-slate-950 p-6 text-slate-100 shadow-2xl sm:p-10 lg:p-14"
         style={{
-          backgroundImage: "radial-gradient(circle at 50% 50%, rgba(30, 41, 59, 0.4) 0%, rgba(15, 23, 42, 0.95) 100%)",
+          backgroundImage:
+            "radial-gradient(circle at 50% 50%, rgba(30,41,59,0.55) 0%, rgba(2,6,23,1) 100%)",
         }}
       >
-        {/* Subtle Guilloché Watermark Background */}
-        <div className="absolute inset-0 opacity-5 pointer-events-none flex items-center justify-center">
-          <Award className="w-[600px] h-[600px] text-amber-400" />
+        <div className="pointer-events-none absolute inset-0 flex items-center justify-center opacity-[0.045]">
+          <Award className="h-[min(70vw,560px)] w-[min(70vw,560px)] text-amber-300" />
         </div>
 
-        {/* Corner Ornaments */}
-        <div className="absolute top-4 left-4 w-12 h-12 border-t-2 border-l-2 border-amber-500/80 rounded-tl-xl" />
-        <div className="absolute top-4 right-4 w-12 h-12 border-t-2 border-r-2 border-amber-500/80 rounded-tr-xl" />
-        <div className="absolute bottom-4 left-4 w-12 h-12 border-b-2 border-l-2 border-amber-500/80 rounded-bl-xl" />
-        <div className="absolute bottom-4 right-4 w-12 h-12 border-b-2 border-r-2 border-amber-500/80 rounded-br-xl" />
+        <div className="pointer-events-none absolute left-3 top-3 h-10 w-10 rounded-tl-lg border-l-2 border-t-2 border-amber-400 sm:left-5 sm:top-5 sm:h-14 sm:w-14" />
+        <div className="pointer-events-none absolute right-3 top-3 h-10 w-10 rounded-tr-lg border-r-2 border-t-2 border-amber-400 sm:right-5 sm:top-5 sm:h-14 sm:w-14" />
+        <div className="pointer-events-none absolute bottom-3 left-3 h-10 w-10 rounded-bl-lg border-b-2 border-l-2 border-amber-400 sm:bottom-5 sm:left-5 sm:h-14 sm:w-14" />
+        <div className="pointer-events-none absolute bottom-3 right-3 h-10 w-10 rounded-br-lg border-b-2 border-r-2 border-amber-400 sm:bottom-5 sm:right-5 sm:h-14 sm:w-14" />
 
-        {/* Certificate Header */}
-        <div className="text-center space-y-3 relative z-10">
-          <div className="inline-flex items-center justify-center gap-2 px-4 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/40 text-amber-300 text-xs font-bold tracking-widest uppercase">
-            <Sparkles className="w-4 h-4 text-amber-400" />
-            Fortune 500 Executive Standard
-            <Sparkles className="w-4 h-4 text-amber-400" />
+        <header className="relative z-10 space-y-3 text-center">
+          <div className="mx-auto inline-flex items-center gap-2 rounded-full border border-amber-500/40 bg-amber-500/10 px-4 py-1.5 text-[10px] font-bold uppercase tracking-[0.22em] text-amber-300 sm:text-xs">
+            <Sparkles className="h-4 w-4 text-amber-400" />
+            SarlaYash Learning Solutions LLP
+            <Sparkles className="h-4 w-4 text-amber-400" />
           </div>
 
-          <h2 className="text-2xl sm:text-4xl font-serif font-black tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-yellow-300 to-amber-400 uppercase pt-2">
-            Certificate of Engineering Excellence
+          <p className="text-xs font-extrabold uppercase tracking-[0.35em] text-amber-200 sm:text-sm">
+            Powered By Kapil
+          </p>
+
+          <h2 className="pt-1 font-serif text-3xl font-black uppercase tracking-wide text-transparent bg-gradient-to-r from-amber-200 via-yellow-300 to-amber-400 bg-clip-text sm:text-5xl">
+            Certificate of Completion
           </h2>
 
-          <p className="text-xs sm:text-sm text-slate-400 font-sans tracking-widest uppercase">
-            AI Launchpad Track • Batch BI-V18 BLR
+          <p className="text-[10px] uppercase tracking-[0.22em] text-slate-400 sm:text-xs">
+            AI Launchpad Learning Track
           </p>
-        </div>
+        </header>
 
-        {/* Recipient Statement */}
-        <div className="text-center my-10 space-y-4 relative z-10">
-          <p className="text-xs sm:text-sm text-slate-400 font-sans italic">
-            This is proudly and formally conferred upon
+        <div className="relative z-10 my-8 space-y-4 text-center sm:my-10">
+          <p className="font-serif text-sm italic text-slate-300 sm:text-base">
+            This certificate is presented to
           </p>
 
-          <div className="border-b-2 border-amber-500/40 inline-block px-8 py-2 min-w-[280px]">
-            <span className="text-3xl sm:text-5xl font-serif font-extrabold text-white tracking-wide">
+          <div className="mx-auto inline-block max-w-full border-b-2 border-amber-500/60 px-4 py-3 sm:px-10">
+            <span className="break-words font-serif text-3xl font-extrabold tracking-wide text-white sm:text-5xl">
               {learnerName}
             </span>
           </div>
 
-          <p className="text-xs sm:text-sm text-cyan-300 font-semibold tracking-wide">
-            {learner.role || "Enterprise AI & Agentic Systems Architect"}
+          <p className="text-sm font-semibold tracking-wide text-cyan-200 sm:text-base">
+            {learnerRole}
           </p>
 
-          <p className="text-xs sm:text-sm text-slate-300 max-w-2xl mx-auto leading-relaxed pt-2">
-            for successfully mastering from <span className="text-amber-300 font-bold">Zero to Infinity</span> all 14 core technical modules encompassing Python Basics, Data Structures, OOP Generics, REST API Microservices with FastAPI, Generative AI Foundations, Prompt Engineering, Open-Source LLMs (Ollama), LangChain Orchestration, Agentic ReAct Tooling, LangGraph Multi-Agent Workflows, and Enterprise RAG on Azure AI Services — capped with the delivery of the Production AI Sales Assistant.
+          <p className="mx-auto max-w-3xl pt-2 text-xs leading-6 text-slate-300 sm:text-sm">
+            In recognition of learning progress, commitment, and successful
+            participation in the AI Launchpad learning track. This certificate
+            acknowledges the learner&apos;s effort in developing skills across
+            AI, data, software, and related technology topics included in the
+            program.
           </p>
         </div>
 
-        {/* Signatures & Gold Holographic Seal */}
-        <div className="grid grid-cols-1 md:grid-cols-3 items-end gap-8 pt-8 mt-6 border-t border-slate-800/80 relative z-10">
-          {/* Signatory 1 */}
-          <div className="text-center md:text-left space-y-1">
-            <div className="font-serif italic text-base sm:text-lg text-cyan-300 tracking-wider font-semibold">
-              Dr. Arvind Ramanathan
-            </div>
-            <div className="w-36 h-0.5 bg-slate-700 mx-auto md:mx-0" />
-            <p className="text-[11px] font-bold text-slate-200">Director, Enterprise AI Systems</p>
-            <p className="text-[10px] text-slate-500">AI Launchpad Program Board</p>
-          </div>
-
-          {/* Central Holographic Gold Seal */}
-          <div className="flex flex-col items-center justify-center">
-            <div className="w-24 h-24 rounded-full bg-gradient-to-tr from-amber-600 via-yellow-400 to-amber-700 p-1 shadow-2xl shadow-amber-500/30 flex items-center justify-center relative">
-              <div className="w-full h-full rounded-full border-2 border-dashed border-amber-950 flex flex-col items-center justify-center text-center p-1 bg-gradient-to-br from-yellow-300 to-amber-500 text-slate-950 font-black">
-                <ShieldCheck className="w-6 h-6 text-slate-950 mb-0.5" />
-                <span className="text-[9px] uppercase tracking-tighter leading-none">OFFICIAL SEAL</span>
-                <span className="text-[8px] font-extrabold text-amber-950">FORTUNE 500</span>
-              </div>
-            </div>
-            <div className="flex gap-2 -mt-2">
-              <div className="w-3 h-8 bg-amber-600 transform -rotate-12 rounded-b" />
-              <div className="w-3 h-8 bg-amber-600 transform rotate-12 rounded-b" />
+        <div className="relative z-10 flex flex-col items-center gap-6 border-t border-amber-500/20 pt-7">
+          <div
+            className="flex h-24 w-24 items-center justify-center rounded-full p-1 shadow-xl sm:h-28 sm:w-28"
+            style={{
+              background:
+                "linear-gradient(135deg, #92400e, #f59e0b, #fde68a, #f59e0b, #92400e)",
+              boxShadow: "0 0 32px rgba(245,158,11,0.28)",
+            }}
+          >
+            <div
+              className="flex h-full w-full flex-col items-center justify-center rounded-full border-2 border-dashed text-center"
+              style={{
+                borderColor: "#78350f",
+                background: "linear-gradient(135deg, #fde68a, #f59e0b)",
+                color: "#111827",
+              }}
+            >
+              <Award className="mb-1 h-7 w-7" />
+              <span className="text-[9px] font-black uppercase tracking-widest">
+                Achievement
+              </span>
+              <span className="text-[8px] font-bold">SARLAYASH</span>
             </div>
           </div>
 
-          {/* Signatory 2 & QR Representation */}
-          <div className="text-center md:text-right space-y-1">
-            <div className="font-serif italic text-base sm:text-lg text-cyan-300 tracking-wider font-semibold">
-              Sarah Jenkins, Fellow
+          <div className="space-y-2 text-center">
+            <div
+              className="font-serif text-3xl font-bold italic tracking-wide sm:text-4xl"
+              style={{
+                color: "#fbbf24",
+                textShadow: "0 0 18px rgba(245,158,11,0.25)",
+              }}
+            >
+              Kapil
             </div>
-            <div className="w-36 h-0.5 bg-slate-700 mx-auto md:ml-auto md:mr-0" />
-            <p className="text-[11px] font-bold text-slate-200">Chief Enterprise Architect</p>
-            <p className="text-[10px] text-slate-500">Center of Excellence</p>
+            <div
+              className="mx-auto h-0.5 w-48"
+              style={{
+                background:
+                  "linear-gradient(90deg, transparent, #f59e0b, #fde68a, #f59e0b, transparent)",
+              }}
+            />
+            <p className="text-sm font-extrabold tracking-wide text-white">
+              Kapil
+            </p>
+            <p className="text-xs font-bold uppercase tracking-widest text-amber-400 sm:text-sm">
+              Knowledge MultiVerse Architect
+            </p>
+            <p className="text-xs font-semibold text-slate-300">
+              Powered By Kapil
+            </p>
           </div>
         </div>
 
-        {/* Bottom Verification Footer */}
-        <div className="mt-8 pt-4 border-t border-slate-900 flex flex-col sm:flex-row items-center justify-between text-[11px] text-slate-500 gap-2 relative z-10">
-          <span>Credential ID: <strong className="text-slate-300 font-mono">{credentialId}</strong></span>
-          <span>Conferred Date: <strong className="text-slate-300">{issueDate}</strong></span>
-          <span className="text-emerald-400 font-bold flex items-center gap-1">
-            <CheckCircle2 className="w-3.5 h-3.5" />
-            Cryptographically Verified
+        <footer className="relative z-10 mt-8 flex flex-col items-center justify-between gap-2 border-t border-slate-800 pt-4 text-center text-[10px] text-slate-400 sm:flex-row sm:text-left">
+          <span>
+            Certificate ID:{" "}
+            <strong className="font-mono text-slate-200">{credentialId}</strong>
           </span>
-        </div>
-      </div>
+          <span>
+            Issue Date: <strong className="text-slate-200">{issueDate}</strong>
+          </span>
+          <span className="inline-flex items-center gap-1 font-semibold text-amber-300">
+            <CheckCircle2 className="h-3.5 w-3.5" />
+            Issued by Kapil
+          </span>
+        </footer>
+      </section>
 
-      {/* Verification Modal */}
       {showVerifyModal && (
-        <div className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4">
-          <div className="bg-slate-900 border border-slate-700 max-w-md w-full rounded-3xl p-6 sm:p-8 shadow-2xl relative space-y-4">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-400">
-                <ShieldCheck className="w-5 h-5" />
+        <div
+          className="no-print fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 p-4 backdrop-blur-sm"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="certificate-details-title"
+          onClick={() => setShowVerifyModal(false)}
+        >
+          <div
+            className="w-full max-w-md space-y-5 rounded-3xl border border-slate-700 bg-slate-900 p-6 shadow-2xl sm:p-8"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <div className="flex items-start justify-between gap-4">
+              <div className="flex items-center gap-3">
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-amber-500/30 bg-amber-500/10 text-amber-300">
+                  <ShieldCheck className="h-5 w-5" />
+                </div>
+                <div>
+                  <h3
+                    id="certificate-details-title"
+                    className="text-base font-bold text-white"
+                  >
+                    Certificate Details
+                  </h3>
+                  <p className="font-mono text-xs text-slate-400">
+                    {credentialId}
+                  </p>
+                </div>
               </div>
-              <div>
-                <h3 className="text-base font-bold text-white">Verified Credential Record</h3>
-                <p className="text-xs text-slate-400 font-mono">{credentialId}</p>
-              </div>
+              <button
+                type="button"
+                aria-label="Close certificate details"
+                onClick={() => setShowVerifyModal(false)}
+                className="rounded-lg p-1 text-slate-400 transition hover:bg-slate-800 hover:text-white"
+              >
+                <X className="h-5 w-5" />
+              </button>
             </div>
 
-            <div className="bg-slate-950 p-4 rounded-2xl border border-slate-800 space-y-2 text-xs text-slate-300 font-mono">
-              <div className="flex justify-between">
-                <span className="text-slate-500">Learner:</span>
-                <span className="text-white font-bold">{learnerName}</span>
+            <dl className="space-y-3 rounded-2xl border border-slate-800 bg-slate-950 p-4 text-xs">
+              <div className="flex items-start justify-between gap-4">
+                <dt className="text-slate-500">Recipient</dt>
+                <dd className="text-right font-bold text-white">{learnerName}</dd>
               </div>
-              <div className="flex justify-between">
-                <span className="text-slate-500">Program:</span>
-                <span className="text-cyan-300 font-bold">BI V18 AI Launchpad</span>
+              <div className="flex items-start justify-between gap-4">
+                <dt className="text-slate-500">Program</dt>
+                <dd className="text-right font-bold text-cyan-200">
+                  AI Launchpad Learning Track
+                </dd>
               </div>
-              <div className="flex justify-between">
-                <span className="text-slate-500">Status:</span>
-                <span className="text-emerald-400 font-bold">ACTIVE & VALID</span>
+              <div className="flex items-start justify-between gap-4">
+                <dt className="text-slate-500">Issued by</dt>
+                <dd className="text-right font-bold text-amber-300">
+                  Kapil — Knowledge MultiVerse Architect
+                </dd>
               </div>
-              <div className="flex justify-between">
-                <span className="text-slate-500">Accreditation:</span>
-                <span className="text-amber-400 font-bold">Fortune 500 Standards</span>
+              <div className="flex items-start justify-between gap-4">
+                <dt className="text-slate-500">Branding</dt>
+                <dd className="text-right font-bold text-amber-300">
+                  Powered By Kapil
+                </dd>
               </div>
-            </div>
+              <div className="flex items-start justify-between gap-4">
+                <dt className="text-slate-500">Record status</dt>
+                <dd className="text-right font-bold text-slate-200">
+                  Displayed in this application
+                </dd>
+              </div>
+            </dl>
+
+            <p className="text-xs leading-5 text-slate-400">
+              This screen displays the certificate information stored or
+              generated by this application. It does not independently validate
+              identity or provide cryptographic verification.
+            </p>
 
             <button
+              type="button"
               onClick={() => setShowVerifyModal(false)}
-              className="w-full py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs transition-all cursor-pointer"
+              className="w-full rounded-xl bg-amber-500 px-4 py-2.5 text-xs font-black text-slate-950 transition hover:bg-amber-400"
             >
-              Close Verification
+              Close
             </button>
           </div>
         </div>
       )}
-    </div>
+    </main>
   );
 }
