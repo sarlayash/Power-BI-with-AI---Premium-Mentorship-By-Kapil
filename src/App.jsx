@@ -18,7 +18,7 @@ import {
 import { COURSE_INFO } from "./data/curriculumData";
 import { ShieldCheck, Sparkles, Crown, Zap, ArrowDown, BookOpen } from "lucide-react";
 
-const HERO_IMAGE = "/ai_launchpad_1510.png";
+const HERO_IMAGE = `${import.meta.env.BASE_URL}ai_launchpad_1510.png`;
 
 const FOUNDER_NOTE = `Welcome to AI Launchpad — a learning journey built on one belief: your starting point does not define your destination. Learn the fundamentals, practise consistently, build real projects, and grow from zero to infinity. Stay curious, stay ethical, and use technology to create meaningful value. I’m glad to be part of your journey.`;
 
