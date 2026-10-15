@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Sparkles, ShieldCheck, ArrowRight, User, Briefcase, Award } from "lucide-react";
+import { Sparkles, ShieldCheck, ArrowRight, User, Briefcase, Crown, Star, Zap } from "lucide-react";
 import confetti from "canvas-confetti";
 import { playSuccessChime } from "../utils/soundEffects";
 
@@ -10,7 +10,7 @@ const ROLES = [
   "Principal Generative AI Engineer",
   "BI & Power Platform AI Specialist",
   "Full-Stack LLM & FastAPI Developer",
-  "Azure Cloud AI Solutions Architect"
+  "Azure Cloud AI Solutions Architect",
 ];
 
 export default function LearnerOnboarding({ onComplete }) {
@@ -29,9 +29,10 @@ export default function LearnerOnboarding({ onComplete }) {
 
     try {
       confetti({
-        particleCount: 80,
-        spread: 70,
-        origin: { y: 0.6 }
+        particleCount: 120,
+        spread: 80,
+        origin: { y: 0.6 },
+        colors: ["#f59e0b", "#fbbf24", "#fde68a", "#d97706", "#ffffff"],
       });
     } catch {}
 
@@ -44,64 +45,120 @@ export default function LearnerOnboarding({ onComplete }) {
       company: company.trim() || "Fortune 500 Enterprise",
       joinedAt: new Date().toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }),
       isLoggedIn: true,
-      xp: 200, // Onboarding welcome bonus XP!
+      xp: 200,
     };
 
     onComplete(profileData);
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex items-center justify-center p-4 relative overflow-hidden">
-      {/* Dynamic Background Glows */}
-      <div className="absolute top-1/4 -left-20 w-96 h-96 bg-blue-600/20 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-1/4 -right-20 w-96 h-96 bg-purple-600/20 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute top-10 right-1/3 w-64 h-64 bg-cyan-500/15 rounded-full blur-2xl pointer-events-none" />
+    <div
+      className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden"
+      style={{ background: "#0a0a0a" }}
+    >
+      {/* ─── Background Gold Glows ─── */}
+      <div
+        className="absolute top-1/4 -left-32 w-[500px] h-[500px] rounded-full blur-3xl pointer-events-none"
+        style={{ background: "radial-gradient(circle, rgba(245,158,11,0.10) 0%, transparent 70%)" }}
+      />
+      <div
+        className="absolute bottom-1/4 -right-32 w-[500px] h-[500px] rounded-full blur-3xl pointer-events-none"
+        style={{ background: "radial-gradient(circle, rgba(180,83,9,0.08) 0%, transparent 70%)" }}
+      />
+      <div
+        className="absolute top-10 right-1/3 w-64 h-64 rounded-full blur-2xl pointer-events-none"
+        style={{ background: "radial-gradient(circle, rgba(253,230,138,0.05) 0%, transparent 70%)" }}
+      />
 
-      <div className="max-w-2xl w-full bg-slate-900/90 border border-slate-800 rounded-3xl p-8 md:p-12 shadow-2xl backdrop-blur-xl relative z-10">
-        {/* Header Badge */}
-        <div className="flex items-center justify-between mb-6">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/30 text-blue-400 text-xs font-semibold tracking-wide uppercase">
-            <ShieldCheck className="w-4 h-4 text-blue-400" />
+      {/* ─── Card ─── */}
+      <div
+        className="max-w-2xl w-full rounded-3xl p-8 md:p-12 relative z-10"
+        style={{
+          background: "linear-gradient(135deg, #111 0%, #181818 100%)",
+          border: "1px solid rgba(245,158,11,0.25)",
+          boxShadow: "0 24px 80px rgba(0,0,0,0.8), 0 0 40px rgba(245,158,11,0.08), inset 0 1px 0 rgba(255,255,255,0.03)",
+        }}
+      >
+        {/* Gold top accent line */}
+        <div
+          className="absolute top-0 left-8 right-8 h-px rounded-full"
+          style={{ background: "linear-gradient(90deg, transparent, #f59e0b, #fde68a, #f59e0b, transparent)" }}
+        />
+
+        {/* ─── Header Badges ─── */}
+        <div className="flex items-center justify-between mb-7">
+          <div
+            className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider"
+            style={{
+              background: "rgba(245,158,11,0.1)",
+              border: "1px solid rgba(245,158,11,0.3)",
+              color: "#f59e0b",
+            }}
+          >
+            <Crown className="w-3.5 h-3.5" />
             Fortune 500 Enterprise Launchpad
           </div>
-          <span className="text-xs text-slate-400 font-mono">BI V18 • Nov 27th BLR</span>
+          <div
+            className="text-xs font-bold font-mono"
+            style={{
+              background: "rgba(245,158,11,0.08)",
+              border: "1px solid rgba(245,158,11,0.2)",
+              color: "#d97706",
+              padding: "4px 10px",
+              borderRadius: "6px",
+            }}
+          >
+            BI V18 · Nov 27th BLR
+          </div>
         </div>
 
-        {/* Title */}
-        <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight text-white mb-3">
-          AI Launchpad: <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-cyan-300 to-indigo-400">Zero to Infinity</span>
+        {/* ─── Title ─── */}
+        <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight mb-3" style={{ color: "#f0f0f0" }}>
+          AI Launchpad:{" "}
+          <span className="shimmer-gold">Zero to Infinity</span>
         </h1>
-        <p className="text-slate-400 text-sm md:text-base leading-relaxed mb-8">
-          Welcome to the enterprise standard masterclass in Python, FastAPI, Generative AI, Prompt Engineering, Open-Source LLMs, LangChain, LangGraph Multi-Agent Systems, and Azure AI Cloud RAG.
+        <p className="text-sm md:text-base leading-relaxed mb-8" style={{ color: "#8a8a8a" }}>
+          Welcome to the enterprise standard masterclass in Python, FastAPI, Generative AI, Prompt Engineering,
+          Open-Source LLMs, LangChain, LangGraph Multi-Agent Systems, and Azure AI Cloud RAG.
         </p>
 
-        {/* Form */}
-        <form onSubmit={handleStart} className="space-y-6">
+        {/* ─── Form ─── */}
+        <form onSubmit={handleStart} className="space-y-5">
           {/* Name Field */}
           <div>
-            <label className="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-2">
-              Learner Full Name <span className="text-rose-400">*</span>
+            <label
+              className="block text-xs font-bold uppercase tracking-wider mb-2"
+              style={{ color: "#c4c4c4" }}
+            >
+              Learner Full Name <span style={{ color: "#ef4444" }}>*</span>
             </label>
             <div className="relative">
-              <User className="w-5 h-5 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
+              <User
+                className="w-5 h-5 absolute left-3.5 top-1/2 -translate-y-1/2"
+                style={{ color: "#4a4a4a" }}
+              />
               <input
                 type="text"
                 value={name}
-                onChange={(e) => {
-                  setName(e.target.value);
-                  if (error) setError("");
-                }}
+                onChange={(e) => { setName(e.target.value); if (error) setError(""); }}
                 placeholder="e.g. Alex Morgan, Senior AI Architect"
-                className="w-full pl-11 pr-4 py-3 bg-slate-800/80 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all font-medium text-base"
+                className="w-full pl-11 pr-4 py-3 rounded-xl text-white placeholder-opacity-40 font-medium text-base transition-all outline-none"
+                style={{
+                  background: "#1f1f1f",
+                  border: error ? "1px solid #ef4444" : "1px solid rgba(245,158,11,0.2)",
+                  color: "#f0f0f0",
+                }}
+                onFocus={(e) => (e.target.style.border = "1px solid rgba(245,158,11,0.6)")}
+                onBlur={(e) => (e.target.style.border = error ? "1px solid #ef4444" : "1px solid rgba(245,158,11,0.2)")}
                 autoFocus
               />
             </div>
-            {error && <p className="text-rose-400 text-xs mt-1.5 font-medium">{error}</p>}
+            {error && <p className="text-xs mt-1.5 font-medium" style={{ color: "#ef4444" }}>{error}</p>}
           </div>
 
           {/* Avatar Selection */}
           <div>
-            <label className="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-2">
+            <label className="block text-xs font-bold uppercase tracking-wider mb-2" style={{ color: "#c4c4c4" }}>
               Choose Your Executive Avatar
             </label>
             <div className="flex flex-wrap gap-2.5">
@@ -110,11 +167,13 @@ export default function LearnerOnboarding({ onComplete }) {
                   key={item}
                   type="button"
                   onClick={() => setAvatar(item)}
-                  className={`w-12 h-12 text-2xl rounded-xl flex items-center justify-center transition-all ${
-                    avatar === item
-                      ? "bg-blue-600 border-2 border-cyan-400 scale-110 shadow-lg shadow-blue-500/30"
-                      : "bg-slate-800/80 border border-slate-700 hover:bg-slate-700/80 hover:scale-105"
-                  }`}
+                  className="w-12 h-12 text-2xl rounded-xl flex items-center justify-center transition-all"
+                  style={{
+                    background: avatar === item ? "rgba(245,158,11,0.15)" : "#1f1f1f",
+                    border: avatar === item ? "2px solid #f59e0b" : "1px solid rgba(255,255,255,0.06)",
+                    transform: avatar === item ? "scale(1.12)" : "scale(1)",
+                    boxShadow: avatar === item ? "0 0 12px rgba(245,158,11,0.3)" : "none",
+                  }}
                 >
                   {item}
                 </button>
@@ -124,18 +183,23 @@ export default function LearnerOnboarding({ onComplete }) {
 
           {/* Role Selection */}
           <div>
-            <label className="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-2">
+            <label className="block text-xs font-bold uppercase tracking-wider mb-2" style={{ color: "#c4c4c4" }}>
               Target Enterprise Specialization
             </label>
             <div className="relative">
-              <Briefcase className="w-5 h-5 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
+              <Briefcase className="w-5 h-5 absolute left-3.5 top-1/2 -translate-y-1/2" style={{ color: "#4a4a4a" }} />
               <select
                 value={role}
                 onChange={(e) => setRole(e.target.value)}
-                className="w-full pl-11 pr-4 py-3 bg-slate-800/80 border border-slate-700 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all font-medium appearance-none cursor-pointer"
+                className="w-full pl-11 pr-4 py-3 rounded-xl font-medium appearance-none cursor-pointer outline-none transition-all"
+                style={{
+                  background: "#1f1f1f",
+                  border: "1px solid rgba(245,158,11,0.2)",
+                  color: "#f0f0f0",
+                }}
               >
                 {ROLES.map((r) => (
-                  <option key={r} value={r} className="bg-slate-900 text-white">
+                  <option key={r} value={r} style={{ background: "#111", color: "#f0f0f0" }}>
                     {r}
                   </option>
                 ))}
@@ -143,9 +207,9 @@ export default function LearnerOnboarding({ onComplete }) {
             </div>
           </div>
 
-          {/* Company / Center */}
+          {/* Company */}
           <div>
-            <label className="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-2">
+            <label className="block text-xs font-bold uppercase tracking-wider mb-2" style={{ color: "#c4c4c4" }}>
               Organization / Department
             </label>
             <input
@@ -153,38 +217,52 @@ export default function LearnerOnboarding({ onComplete }) {
               value={company}
               onChange={(e) => setCompany(e.target.value)}
               placeholder="e.g. Fortune 500 Enterprise AI Center of Excellence"
-              className="w-full px-4 py-3 bg-slate-800/80 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-sm"
+              className="w-full px-4 py-3 rounded-xl text-sm outline-none transition-all"
+              style={{
+                background: "#1f1f1f",
+                border: "1px solid rgba(245,158,11,0.15)",
+                color: "#f0f0f0",
+              }}
             />
           </div>
 
           {/* Value Highlights */}
-          <div className="grid grid-cols-3 gap-3 pt-2">
-            <div className="bg-slate-800/50 border border-slate-800 p-3 rounded-xl text-center">
-              <span className="text-xl">🏆</span>
-              <p className="text-[11px] font-semibold text-slate-300 mt-1">Fortune 500</p>
-              <p className="text-[10px] text-slate-500">Verified Standards</p>
-            </div>
-            <div className="bg-slate-800/50 border border-slate-800 p-3 rounded-xl text-center">
-              <span className="text-xl">💻</span>
-              <p className="text-[11px] font-semibold text-slate-300 mt-1">Integrated IDLE</p>
-              <p className="text-[10px] text-slate-500">WebAssembly Pyodide</p>
-            </div>
-            <div className="bg-slate-800/50 border border-slate-800 p-3 rounded-xl text-center">
-              <span className="text-xl">📜</span>
-              <p className="text-[11px] font-semibold text-slate-300 mt-1">Gold Certificate</p>
-              <p className="text-[10px] text-slate-500">Official Credential</p>
-            </div>
+          <div className="grid grid-cols-3 gap-3 pt-1">
+            {[
+              { icon: "🏆", title: "Fortune 500",    sub: "Verified Standards" },
+              { icon: "💻", title: "Python IDLE",     sub: "WebAssembly Pyodide" },
+              { icon: "📜", title: "Gold Certificate", sub: "Official Credential" },
+            ].map(({ icon, title, sub }) => (
+              <div
+                key={title}
+                className="p-3 rounded-xl text-center"
+                style={{
+                  background: "rgba(245,158,11,0.04)",
+                  border: "1px solid rgba(245,158,11,0.12)",
+                }}
+              >
+                <span className="text-xl">{icon}</span>
+                <p className="text-[11px] font-bold mt-1" style={{ color: "#c4c4c4" }}>{title}</p>
+                <p className="text-[10px]" style={{ color: "#3a3a3a" }}>{sub}</p>
+              </div>
+            ))}
           </div>
 
-          {/* Submit Action */}
+          {/* Submit */}
           <button
             type="submit"
-            className="w-full py-4 px-6 rounded-xl font-bold text-base text-white bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-500 hover:from-blue-500 hover:via-indigo-500 hover:to-cyan-400 active:scale-[0.99] transition-all shadow-xl shadow-blue-600/30 flex items-center justify-center gap-2 group cursor-pointer"
+            className="btn-gold w-full py-4 px-6 rounded-xl text-base flex items-center justify-center gap-2.5 group cursor-pointer"
           >
-            <Sparkles className="w-5 h-5 text-yellow-300" />
+            <Sparkles className="w-5 h-5" style={{ color: "#0a0a0a" }} />
             <span>Begin Enterprise Learning Journey</span>
-            <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+            <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" style={{ color: "#0a0a0a" }} />
           </button>
+
+          {/* Powered by */}
+          <p className="text-center text-[11px] font-semibold" style={{ color: "#2e2e2e" }}>
+            <Crown className="w-3 h-3 inline mr-1" style={{ color: "#f59e0b" }} />
+            Powered by <span style={{ color: "#f59e0b" }}>Kapil</span> · AI Launchpad Academy · Fortune 500 Standards
+          </p>
         </form>
       </div>
     </div>
