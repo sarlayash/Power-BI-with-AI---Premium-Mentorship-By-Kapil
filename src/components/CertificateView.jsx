@@ -49,7 +49,7 @@ export default function CertificateView({ learner = {} }) {
   };
 
   const handleShare = async () => {
-    const shareText = `I have completed the AI Launchpad learning track. Certificate recipient: ${learnerName}. Issued by Kapil — Knowledge MultiVerse Architect. Powered By Kapil. Certificate ID: ${credentialId}.`;
+    const shareText = `I have completed the AI Launchpad learning track. Certificate recipient: ${learnerName}. Issued by Kapil | Founder and Knowledge Multiverse Architect. Powered By Kapil. Certificate ID: ${credentialId}.`;
 
     try {
       if (navigator.share) {
@@ -266,12 +266,9 @@ export default function CertificateView({ learner = {} }) {
               }}
             />
             <p className="text-sm font-extrabold tracking-wide text-white">
-              Kapil
+              Kapil | Founder and Knowledge Multiverse Architect
             </p>
-            <p className="text-xs font-bold uppercase tracking-widest text-amber-400 sm:text-sm">
-              Knowledge MultiVerse Architect
-            </p>
-            <p className="text-xs font-semibold text-slate-300">
+            <p className="text-xs font-semibold text-amber-400">
               Powered By Kapil
             </p>
           </div>
@@ -287,7 +284,7 @@ export default function CertificateView({ learner = {} }) {
           </span>
           <span className="inline-flex items-center gap-1 font-semibold text-amber-300">
             <CheckCircle2 className="h-3.5 w-3.5" />
-            Issued by Kapil
+            Kapil | Founder and Knowledge Multiverse Architect
           </span>
         </footer>
       </section>
@@ -343,9 +340,9 @@ export default function CertificateView({ learner = {} }) {
                 </dd>
               </div>
               <div className="flex items-start justify-between gap-4">
-                <dt className="text-slate-500">Issued by</dt>
+                <dt className="text-slate-500">Signatory</dt>
                 <dd className="text-right font-bold text-amber-300">
-                  Kapil — Knowledge MultiVerse Architect
+                  Kapil | Founder and Knowledge Multiverse Architect
                 </dd>
               </div>
               <div className="flex items-start justify-between gap-4">
